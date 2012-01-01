@@ -1,0 +1,91 @@
+{
+	"id" : 1,
+	"name" : "Sample Restaurant",
+	"menues" : [
+		{
+			"name" : "Dinner",
+			"sections" : [
+				{
+					"name" : "Appetizers",
+					"menuItems" : [
+						{
+							"name" : "Appetizer 1",
+							"description" : "Description for Appetizer 1",
+							"price" : 5.00
+						},
+						{
+							"name" : "Appetizer 2",
+							"description" : "Description for Appetizer 2",
+							"price" : 10.00
+						},
+						{
+							"name" : "Appetizer 3",
+							"description" : "Description for Appetizer 3",
+							"price" : 15.00
+						}
+					]
+				},
+				{
+					"name" : "Salads",
+					"menuItems" : [
+						{
+							"name" : "Salad 1",
+							"description" : "Description for Salad 1",
+							"price" : 5.00
+						},
+						{
+							"name" : "Salad 2",
+							"description" : "Description for Salad 2",
+							"price" : 10.00
+						},
+						{
+							"name" : "Salad 3",
+							"description" : "Description for Salad 3",
+							"price" : 15.00
+						}
+					]
+				},
+				{
+					"name" : "Entrees",
+					"menuItems" : [
+						{
+							"name" : "Entree 1",
+							"description" : "Description for Entree 1",
+							"price" : 20.00
+						},
+						{
+							"name" : "Entree 2",
+							"description" : "Description for Entree 2",
+							"price" : 30.00
+						},
+						{
+							"name" : "Entree 3",
+							"description" : "Description for Entree 3",
+							"price" : 40.00
+						}
+					]
+				},
+				{
+					"name" : "Deserts",
+					"menuItems" : [
+						{
+							"name" : "Desert 1",
+							"description" : "Description for Desert 1",
+							"price" : 9.00
+						},
+						{
+							"name" : "Desert 2",
+							"description" : "Description for Desert 2",
+							"price" : 10.00
+						},
+						{
+							"name" : "Desert 3",
+							"description" : "Description for Desert 3",
+							"price" : 12.00
+						}
+					]
+				}
+			]
+		} 
+	]
+}
