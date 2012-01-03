@@ -1,0 +1,183 @@
+@import url( "reset.css" );
+@import url( "form.css" );
+
+a img, frameset, fieldset { 
+	border: 0;
+}
+
+a:visited {
+}
+
+a {
+	color: #0095D3;
+	outline: medium none;
+	text-decoration: underline;
+}
+
+p {
+	margin: 0 0 0.5em;
+}
+
+h2, h3, h4, h5 {
+	font-weight:300;
+}
+
+h2 {
+	color: #3C3D40;
+	font-size: 1.6em;
+	font-weight: 700;
+	margin: 0 0 25px;
+}
+
+h3 {
+	color: #3C3D40;
+	font-size: 1.3em;
+	font-weight: bold;
+	margin: 0 0 10px;
+}
+
+h4 {
+	font-size: 1.12em;
+	margin: 0 0 10px 0;
+	color: #272727;
+	font-weight: bold;
+}
+
+h5 { 
+	font-weight: bold;
+	margin: 0 0 0 0;
+	font-size:1.12em;
+}
+
+.listings {
+	list-style-type: none;
+	margin: 0 0 20px;
+}
+
+.listing {
+	clear: both;
+	list-style-type: none;
+	margin-bottom:5px;
+	overflow: hidden;
+	padding: 0 0 5px;
+}
+
+.listing img {
+	float: left;
+	margin-right: 8px;
+	line-height: 0;
+	position: relative;
+}
+
+dl {
+	list-style-type: none;
+	margin: 0 0 20px 0;
+}
+
+dt {
+	float: left;
+	clear: left;
+	width: 8em;
+}
+
+dd {
+ 	margin: 0 0 0 9em;
+ 	padding: 0 0 2.5em 0;
+}
+
+textarea, body, input, button, a.button {
+	font-family: "lucida grande", lucida, tahoma, helvetica, arial, sans-serif !important;
+}
+
+body {
+	font-size: 100%;
+}
+
+#header, #content, #footer {
+	margin: 0 auto;
+	width: 944px;
+}
+
+#header {
+	height: 92px;
+	position: relative;
+	display: block;
+}
+
+#header nav {
+	position: absolute;
+	right: 0;
+	top: 50px;
+}
+
+#header nav ul {
+	margin-right: 30px;
+}
+
+#header nav li {
+	float: left;
+	list-style-type: none;
+	margin-left: 10px;
+}
+
+#header nav li a {
+	display: block;
+	font-size: 1.1em;
+	padding: 20px 10px 20px 10px;
+	text-decoration: none;
+}
+
+#header h1 a {
+	display: block;
+	height: 83px;
+	left: 2px;
+	position: relative;
+	top: 0;
+	width: 243px;
+}
+
+section#list {
+	display: table;
+}
+
+section#list header {
+	display: table-header-group;
+}
+
+section#list article {
+	display: table-row-group;
+}
+
+section#list article div {
+	display: table-row;
+}
+
+section#list article div span {
+	display: table-cell;
+}
+
+section#list article div span.controls {
+	width: 60px;
+}
+
+section#list article div span.name {
+	width: 100px;
+}
+
+section#list article div span.address,
+section#list article div span.city {
+	width: 200px;
+}
+
+section#list article div span.state {
+	width: 30px;
+}
+
+section#list article div span.zip {
+	width: 50px;
+}
+
+section#list article div span.country {
+	width: 110px;
+}
+
