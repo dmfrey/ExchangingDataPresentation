@@ -3,8 +3,36 @@
 
 <tiles-definitions>
 	
-	<definition name="home" extends="page">
-		<put-attribute name="content" value="/WEB-INF/views/home/home.jsp" />
+	<definition name="restaurants" extends="page">
+		<put-attribute name="content" value="/WEB-INF/views/home/restaurants.jsp" />
 	</definition>
 		
+	<definition name="restaurant" extends="page">
+		<put-attribute name="content" value="/WEB-INF/views/home/restaurant.jsp" />
+	</definition>
+		
+	<definition name="menus" extends="page">
+		<put-attribute name="content" value="/WEB-INF/views/home/menus.jsp" />
+	</definition>
+		
+	<definition name="menu" extends="page">
+		<put-attribute name="content" value="/WEB-INF/views/home/menu.jsp" />
+	</definition>
+
+	<definition name="sections" extends="page">
+		<put-attribute name="content" value="/WEB-INF/views/home/sections.jsp" />
+	</definition>
+		
+	<definition name="section" extends="page">
+		<put-attribute name="content" value="/WEB-INF/views/home/section.jsp" />
+	</definition>
+
+	<definition name="menuItems" extends="page">
+		<put-attribute name="content" value="/WEB-INF/views/home/menuItems.jsp" />
+	</definition>
+		
+	<definition name="menuItem" extends="page">
+		<put-attribute name="content" value="/WEB-INF/views/home/menuItem.jsp" />
+	</definition>
+
 </tiles-definitions>

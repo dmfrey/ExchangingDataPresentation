@@ -7,6 +7,10 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.dmfrey.restaurant.menu.home.DateTimeZoneHandlerInterceptor;
+import org.dmfrey.restaurant.menu.service.Menu;
+import org.dmfrey.restaurant.menu.service.MenuItem;
+import org.dmfrey.restaurant.menu.service.Restaurant;
+import org.dmfrey.restaurant.menu.service.Section;
 import org.joda.time.DateTimeZone;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -71,13 +75,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	
 	public void configureMessageConverters( List<HttpMessageConverter<?>> converters ) {
 		Map<String, Class<?>> aliases = new HashMap<String, Class<?>>();
-		//aliases.put( "transaction", Transaction.class );
-		//aliases.put( "item", LineItem.class );
-		//aliases.put( "response", Response.class );
-		//aliases.put( "detail", Detail.class );
+		aliases.put( "restaurant", Restaurant.class );
+		aliases.put( "menu", Menu.class );
+		aliases.put( "section", Section.class );
+		aliases.put( "menuItem", MenuItem.class );
 		
 		XStreamMarshaller marshaller = new XStreamMarshaller();
-		//marshaller.setSupportedClasses( new Class[] { List.class, Transaction.class, LineItem.class, Response.class, Detail.class } );
+		marshaller.setSupportedClasses( new Class[] { List.class, Restaurant.class, Menu.class, Section.class, MenuItem.class } );
 		try {
 			marshaller.setAliases( aliases );
 		} catch( ClassNotFoundException e ) {
