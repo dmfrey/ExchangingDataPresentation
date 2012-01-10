@@ -15,8 +15,20 @@ public class Restaurant {
 	private String name;
 	private List<Menu> menus;
 	
+	/**
+	 * 
+	 */
 	public Restaurant() { }
-
+	
+	/**
+	 * @param id
+	 * @param name
+	 */
+	public Restaurant( Long id, String name ) {
+		this.id = id;
+		this.name = name;
+	}
+	
 	/**
 	 * @return the id
 	 */

@@ -15,8 +15,20 @@ public class Menu {
 	private String name;
 	private List<Section> sectons;
 
+	/**
+	 * 
+	 */
 	public Menu() { }
 
+	/**
+	 * @param id
+	 * @param name
+	 */
+	public Menu( Long id, String name ) {
+		this.id = id;
+		this.name = name;
+	}
+	
 	/**
 	 * @return the id
 	 */

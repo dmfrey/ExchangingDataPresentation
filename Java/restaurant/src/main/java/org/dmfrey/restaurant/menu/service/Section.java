@@ -15,8 +15,20 @@ public class Section {
 	private String name;
 	private List<MenuItem> menuItems;
 
+	/**
+	 * 
+	 */
 	public Section() { }
 
+	/**
+	 * @param id
+	 * @param name
+	 */
+	public Section( Long id, String name ) {
+		this.id = id;
+		this.name = name;
+	}
+	
 	/**
 	 * @return the id
 	 */

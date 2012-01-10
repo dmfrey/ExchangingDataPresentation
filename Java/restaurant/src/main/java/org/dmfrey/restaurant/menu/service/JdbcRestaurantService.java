@@ -5,6 +5,10 @@ package org.dmfrey.restaurant.menu.service;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,13 +18,31 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JdbcRestaurantService implements RestaurantService {
 
+	private static final Logger log = Logger.getLogger( JdbcRestaurantService.class );
+	
+	private final Environment environment;
+	
+	private final JdbcTemplate jdbcTemplate;
+
+	private final RestaurantMapper mapper;
+	
+	@Autowired
+	public JdbcRestaurantService( Environment environment, JdbcTemplate jdbcTemplate, RestaurantMapper mapper) {
+		log.trace( "initialize : enter" );
+		
+		this.environment = environment;
+		this.jdbcTemplate = jdbcTemplate;
+		this.mapper = mapper;
+
+		log.trace( "initialize : exit" );
+	}
+
 	/* (non-Javadoc)
 	 * @see org.dmfrey.restaurant.menu.service.RestaurantService#list()
 	 */
 	@Override
 	public List<Restaurant> list() {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.query( RestaurantMapper.SELECT_RESTAURANT, mapper );
 	}
 
 	/* (non-Javadoc)
