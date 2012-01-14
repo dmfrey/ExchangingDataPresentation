@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,17 +19,14 @@ public class JdbcRestaurantService implements RestaurantService {
 
 	private static final Logger log = Logger.getLogger( JdbcRestaurantService.class );
 	
-	private final Environment environment;
-	
 	private final JdbcTemplate jdbcTemplate;
 
 	private final RestaurantMapper mapper;
 	
 	@Autowired
-	public JdbcRestaurantService( Environment environment, JdbcTemplate jdbcTemplate, RestaurantMapper mapper) {
+	public JdbcRestaurantService( JdbcTemplate jdbcTemplate, RestaurantMapper mapper) {
 		log.trace( "initialize : enter" );
 		
-		this.environment = environment;
 		this.jdbcTemplate = jdbcTemplate;
 		this.mapper = mapper;
 
@@ -50,8 +46,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public Restaurant findById( Long restaurantId ) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.queryForObject( RestaurantMapper.SELECT_RESTAURANT + " where id = ?", mapper, restaurantId );
 	}
 
 	/* (non-Javadoc)
@@ -59,8 +54,9 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public Restaurant createRestaurant( Restaurant restaurant ) {
-		// TODO Auto-generated method stub
-		return null;
+		jdbcTemplate.update( "insert into restaurant(name) values(?)", restaurant.getName() );
+		restaurant.setId( jdbcTemplate.queryForLong( "call identity()" ) );
+		return restaurant;
 	}
 
 	/* (non-Javadoc)
@@ -68,8 +64,9 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public Menu createMenu( Menu menu, Long restaurantId ) {
-		// TODO Auto-generated method stub
-		return null;
+		jdbcTemplate.update( "insert into menu(name, restaurant) values(?,?)", menu.getName(), restaurantId );
+		menu.setId( jdbcTemplate.queryForLong( "call identity()" ) );
+		return menu;
 	}
 
 	/* (non-Javadoc)
@@ -77,8 +74,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public List<Menu> listMenus( Long restaurantId ) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.query( RestaurantMapper.SELECT_MENU + " where restaurant = ?", mapper.getMenuRowMapper(), restaurantId );
 	}
 
 	/* (non-Javadoc)
@@ -86,8 +82,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public Menu findMenuById( Long menuId ) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.queryForObject( RestaurantMapper.SELECT_MENU + " where id = ?", mapper.getMenuRowMapper(), menuId );
 	}
 
 	/* (non-Javadoc)
@@ -95,8 +90,8 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public Restaurant updateRestaurant( Restaurant restaurant ) {
-		// TODO Auto-generated method stub
-		return null;
+		jdbcTemplate.update( "update restaurant set name = ? where id = ?", restaurant.getName(), restaurant.getId() );
+		return restaurant;
 	}
 
 	/* (non-Javadoc)
@@ -104,8 +99,8 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public Menu updateMenu( Menu menu ) {
-		// TODO Auto-generated method stub
-		return null;
+		jdbcTemplate.update( "update menu set name = ? where id = ?", menu.getName(), menu.getId() );
+		return menu;
 	}
 
 	/* (non-Javadoc)
@@ -113,8 +108,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public List<Section> listSections( Long menuId ) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.query( RestaurantMapper.SELECT_SECTION + " where menu = ?", mapper.getSectionRowMapper(), menuId );
 	}
 
 	/* (non-Javadoc)
@@ -122,8 +116,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public Section findSectionById( Long sectionId ) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.queryForObject( RestaurantMapper.SELECT_SECTION + " where id = ?", mapper.getSectionRowMapper(), sectionId );
 	}
 
 	/* (non-Javadoc)
@@ -131,8 +124,9 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public Section createSection( Section section, Long menuId ) {
-		// TODO Auto-generated method stub
-		return null;
+		jdbcTemplate.update( "insert into section(name, menu) values(?,?)", section.getName(), menuId );
+		section.setId( jdbcTemplate.queryForLong( "call identity()" ) );
+		return section;
 	}
 
 	/* (non-Javadoc)
@@ -140,8 +134,8 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public Section updateSection( Section section ) {
-		// TODO Auto-generated method stub
-		return null;
+		jdbcTemplate.update( "update section set name = ? where id = ?", section.getName(), section.getId() );
+		return section;
 	}
 
 	/* (non-Javadoc)
@@ -149,8 +143,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public List<MenuItem> listMenuItems( Long sectionId ) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.query( RestaurantMapper.SELECT_MENU_ITEM + " where section = ?", mapper.getMenuItemRowMapper(), sectionId );
 	}
 
 	/* (non-Javadoc)
@@ -158,8 +151,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public MenuItem findMenuItemById( Long menuItemId ) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.queryForObject( RestaurantMapper.SELECT_MENU_ITEM + " where id = ?", mapper.getMenuItemRowMapper(), menuItemId );
 	}
 
 	/* (non-Javadoc)
@@ -167,8 +159,9 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public MenuItem createMenuItem( MenuItem menuItem, Long sectionId ) {
-		// TODO Auto-generated method stub
-		return null;
+		jdbcTemplate.update( "insert into menu_item(name, description, price, section) values(?,?,?,?)", menuItem.getName(), menuItem.getDescription(), menuItem.getPrice(), sectionId );
+		menuItem.setId( jdbcTemplate.queryForLong( "call identity()" ) );
+		return menuItem;
 	}
 
 	/* (non-Javadoc)
@@ -176,8 +169,8 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public MenuItem updateMenuItem( MenuItem menuItem ) {
-		// TODO Auto-generated method stub
-		return null;
+		jdbcTemplate.update( "update menuItem set name = ?, description = ?, price = ? where id = ?", menuItem.getName(), menuItem.getDescription(), menuItem.getPrice(), menuItem.getId() );
+		return menuItem;
 	}
 
 }
