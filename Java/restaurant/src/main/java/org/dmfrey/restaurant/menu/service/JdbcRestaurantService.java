@@ -169,7 +169,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public MenuItem updateMenuItem( MenuItem menuItem ) {
-		jdbcTemplate.update( "update menuItem set name = ?, description = ?, price = ? where id = ?", menuItem.getName(), menuItem.getDescription(), menuItem.getPrice(), menuItem.getId() );
+		jdbcTemplate.update( "update menu_item set name = ?, description = ?, price = ? where id = ?", menuItem.getName(), menuItem.getDescription(), menuItem.getPrice(), menuItem.getId() );
 		return menuItem;
 	}
 
