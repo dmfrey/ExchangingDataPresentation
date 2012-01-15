@@ -98,7 +98,7 @@ public class HomeController {
 		return service.list();
 	}
 
-	@RequestMapping( value = "/{restaurantId}", method = RequestMethod.GET )
+	@RequestMapping( value = "{restaurantId}", method = RequestMethod.GET )
 	public String restaurant( @PathVariable Long restaurantId, WebRequest request, Model model ) {
 		log.info( "restaurant : enter" );
 
@@ -108,21 +108,21 @@ public class HomeController {
 		return "restaurant";
 	}
 
-	@RequestMapping( value = "/{restaurantId}", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
+	@RequestMapping( value = "{restaurantId}", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
 	public @ResponseBody Restaurant restaurantJson( @PathVariable Long restaurantId ) {
 		log.debug( "restaurantJson : enter" );
 		log.debug( "restaurantJson : exit" );
 		return service.findById( restaurantId );
 	}
 	
-	@RequestMapping( value = "/{restaurantId}", method = RequestMethod.GET, consumes = { "application/xml", "text/xml" }, produces = { "application/xml", "text/xml" } )
+	@RequestMapping( value = "{restaurantId}", method = RequestMethod.GET, consumes = { "application/xml", "text/xml" }, produces = { "application/xml", "text/xml" } )
 	public @ResponseBody Restaurant restaurantXml( @PathVariable Long restaurantId ) {
 		log.debug( "restaurantXml : enter" );
 		log.debug( "restaurantXml : exit" );
 		return service.findById( restaurantId );
 	}
 
-	@RequestMapping( value = "/{restaurantId}/menus", method = RequestMethod.GET )
+	@RequestMapping( value = "{restaurantId}/menus", method = RequestMethod.GET )
 	public String menus( @PathVariable Long restaurantId, WebRequest request, Model model ) {
 		log.info( "menus : enter" );
 
@@ -133,21 +133,21 @@ public class HomeController {
 		return "menus";
 	}
 
-	@RequestMapping( value = "/{restaurantId}/menus", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
+	@RequestMapping( value = "{restaurantId}/menus", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
 	public @ResponseBody List<Menu> menusJson( @PathVariable Long restaurantId ) {
 		log.debug( "menusJson : enter" );
 		log.debug( "menusJson : exit" );
 		return service.listMenus( restaurantId );
 	}
 	
-	@RequestMapping( value = "/{restaurantId}/menus", method = RequestMethod.GET, consumes = { "application/xml", "text/xml" }, produces = { "application/xml", "text/xml" } )
+	@RequestMapping( value = "{restaurantId}/menus", method = RequestMethod.GET, consumes = { "application/xml", "text/xml" }, produces = { "application/xml", "text/xml" } )
 	public @ResponseBody List<Menu> menusXml( @PathVariable Long restaurantId ) {
 		log.debug( "menusXml : enter" );
 		log.debug( "menusXml : exit" );
 		return service.listMenus( restaurantId );
 	}
 
-	@RequestMapping( value = "/{restaurantId}/menus", method = RequestMethod.POST )
+	@RequestMapping( value = "{restaurantId}/menus", method = RequestMethod.POST )
 	public String newMenu( @PathVariable Long restaurantId, @Valid @ModelAttribute Menu menu, BindingResult result ) {
 		log.info( "newMenu : enter" );
 		
@@ -163,7 +163,7 @@ public class HomeController {
 		return "redirect:/" + restaurantId + "/menus";
 	}
 	
-	@RequestMapping( value = "/{restaurantId}/menus", method = RequestMethod.PUT )
+	@RequestMapping( value = "{restaurantId}/menus", method = RequestMethod.PUT )
 	public String updateMenu( @PathVariable Long restaurantId, @Valid @ModelAttribute Menu menu, BindingResult result ) {
 		log.info( "updateMenu : enter" );
 		
@@ -179,7 +179,7 @@ public class HomeController {
 		return "redirect:/" + restaurantId + "/menus";
 	}
 	
-	@RequestMapping( value = "/{restaurantId}/menus/{menuId}", method = RequestMethod.GET )
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}", method = RequestMethod.GET )
 	public String menu( @PathVariable Long restaurantId, @PathVariable Long menuId, WebRequest request, Model model ) {
 		log.info( "menu : enter" );
 
@@ -192,21 +192,21 @@ public class HomeController {
 		return "menu";
 	}
 
-	@RequestMapping( value = "/{restaurantId}/menus/{menuId}", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
 	public @ResponseBody Menu menuJson( @PathVariable Long restaurantId, @PathVariable Long menuId ) {
 		log.debug( "menuJson : enter" );
 		log.debug( "menuJson : exit" );
 		return service.findMenuById( menuId );
 	}
 	
-	@RequestMapping( value = "/{restaurantId}/menus/{menuId}", method = RequestMethod.GET, consumes = { "application/xml", "text/xml" }, produces = { "application/xml", "text/xml" } )
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}", method = RequestMethod.GET, consumes = { "application/xml", "text/xml" }, produces = { "application/xml", "text/xml" } )
 	public @ResponseBody Menu menuXml( @PathVariable Long restaurantId, @PathVariable Long menuId ) {
 		log.debug( "menuXml : enter" );
 		log.debug( "menuXml : exit" );
 		return service.findMenuById( menuId );
 	}
 
-	@RequestMapping( value = "/{restaurantId}/menus/{menuId}/sections", method = RequestMethod.GET )
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections", method = RequestMethod.GET )
 	public String sections( @PathVariable Long restaurantId, @PathVariable Long menuId, WebRequest request, Model model ) {
 		log.info( "sections : enter" );
 
@@ -220,7 +220,21 @@ public class HomeController {
 		return "sections";
 	}
 
-	@RequestMapping( value = "/{restaurantId}/menus/{menuId}/sections", method = RequestMethod.POST )
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
+	public @ResponseBody List<Section> sectionsJson( @PathVariable Long restaurantId, @PathVariable Long menuId ) {
+		log.debug( "sectionsJson : enter" );
+		log.debug( "sectionsJson : exit" );
+		return service.listSections( menuId );
+	}
+	
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections", method = RequestMethod.GET, consumes = { "application/xml", "text/xml" }, produces = { "application/xml", "text/xml" } )
+	public @ResponseBody List<Section> sectionsXml( @PathVariable Long restaurantId, @PathVariable Long menuId ) {
+		log.debug( "sectionsXml : enter" );
+		log.debug( "sectionsXml : exit" );
+		return service.listSections( menuId );
+	}
+
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections", method = RequestMethod.POST )
 	public String newSection( @PathVariable Long restaurantId, @PathVariable Long menuId,  @Valid @ModelAttribute Section section, BindingResult result ) {
 		log.info( "newSection : enter" );
 		
@@ -236,7 +250,7 @@ public class HomeController {
 		return "redirect:/" + restaurantId + "/menus/" + menuId + "/sections";
 	}
 	
-	@RequestMapping( value = "/{restaurantId}/menus/{menuId}/sections", method = RequestMethod.PUT )
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections", method = RequestMethod.PUT )
 	public String updateSection( @PathVariable Long restaurantId, @PathVariable Long menuId,  @Valid @ModelAttribute Section section, BindingResult result ) {
 		log.info( "updateSection : enter" );
 		
@@ -252,7 +266,7 @@ public class HomeController {
 		return "redirect:/" + restaurantId + "/menus/" + menuId + "/sections";
 	}
 	
-	@RequestMapping( value = "/{restaurantId}/menus/{menuId}/sections/{sectionId}", method = RequestMethod.GET )
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}", method = RequestMethod.GET )
 	public String section( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId, WebRequest request, Model model ) {
 		log.info( "section : enter" );
 
@@ -266,7 +280,21 @@ public class HomeController {
 		return "section";
 	}
 
-	@RequestMapping( value = "/{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems", method = RequestMethod.GET )
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
+	public @ResponseBody Section sectionJson( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId ) {
+		log.debug( "sectionJson : enter" );
+		log.debug( "sectionJson : exit" );
+		return service.findSectionById( sectionId );
+	}
+	
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}", method = RequestMethod.GET, consumes = { "application/xml", "text/xml" }, produces = { "application/xml", "text/xml" } )
+	public @ResponseBody Section sectionXml( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId ) {
+		log.debug( "sectionXml : enter" );
+		log.debug( "sectionXml : exit" );
+		return service.findSectionById( sectionId );
+	}
+
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems", method = RequestMethod.GET )
 	public String menuItems( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId, WebRequest request, Model model ) {
 		log.info( "menuItems : enter" );
 
@@ -281,7 +309,21 @@ public class HomeController {
 		return "menuItems";
 	}
 
-	@RequestMapping( value = "/{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems", method = RequestMethod.POST )
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
+	public @ResponseBody List<MenuItem> menuItemsJson( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId ) {
+		log.debug( "menuItemsJson : enter" );
+		log.debug( "menuItemsJson : exit" );
+		return service.listMenuItems( sectionId );
+	}
+	
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems", method = RequestMethod.GET, consumes = { "application/xml", "text/xml" }, produces = { "application/xml", "text/xml" } )
+	public @ResponseBody List<MenuItem> menuItemsXml( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId ) {
+		log.debug( "menuItemsXml : enter" );
+		log.debug( "menuItemsXml : exit" );
+		return service.listMenuItems( sectionId );
+	}
+
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems", method = RequestMethod.POST )
 	public String newMenuItem( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId, @Valid @ModelAttribute MenuItem menuItem, BindingResult result ) {
 		log.info( "newMenuItem : enter" );
 		
@@ -297,7 +339,7 @@ public class HomeController {
 		return "redirect:/" + restaurantId + "/menus/" + menuId + "/sections/" + sectionId + "/menuItems";
 	}
 	
-	@RequestMapping( value = "/{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems", method = RequestMethod.PUT )
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems", method = RequestMethod.PUT )
 	public String updateMenuItem( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId, @Valid @ModelAttribute MenuItem menuItem, BindingResult result ) {
 		log.info( "updateMenuItem : enter" );
 		
@@ -313,7 +355,7 @@ public class HomeController {
 		return "redirect:/" + restaurantId + "/menus/" + menuId + "/sections/" + sectionId + "/menuItems";
 	}
 	
-	@RequestMapping( value = "/{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems/{menuItemId}", method = RequestMethod.GET )
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems/{menuItemId}", method = RequestMethod.GET )
 	public String menuItem( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId, @PathVariable Long menuItemId, WebRequest request, Model model ) {
 		log.info( "menuItem : enter" );
 
@@ -326,6 +368,20 @@ public class HomeController {
 		
 		log.info( "menuItem : exit" );
 		return "menuItem";
+	}
+
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems/{menuItemId}", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
+	public @ResponseBody MenuItem menuItemJson( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId, @PathVariable Long menuItemId ) {
+		log.debug( "menuItemJson : enter" );
+		log.debug( "menuItemJson : exit" );
+		return service.findMenuItemById( menuItemId );
+	}
+	
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems/{menuItemId}", method = RequestMethod.GET, consumes = { "application/xml", "text/xml" }, produces = { "application/xml", "text/xml" } )
+	public @ResponseBody MenuItem menuItemXml( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId, @PathVariable Long menuItemId ) {
+		log.debug( "menuItemXml : enter" );
+		log.debug( "menuItemXml : exit" );
+		return service.findMenuItemById( menuItemId );
 	}
 
 }

@@ -46,7 +46,12 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public Restaurant findById( Long restaurantId ) {
-		return jdbcTemplate.queryForObject( RestaurantMapper.SELECT_RESTAURANT + " where id = ?", mapper, restaurantId );
+		Restaurant restaurant = jdbcTemplate.queryForObject( RestaurantMapper.SELECT_RESTAURANT + " where id = ?", mapper, restaurantId ); 
+		if( null != restaurant ) {
+			restaurant.setMenus( listMenus( restaurant.getId() ) );
+		}
+		
+		return restaurant;
 	}
 
 	/* (non-Javadoc)
@@ -74,7 +79,15 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public List<Menu> listMenus( Long restaurantId ) {
-		return jdbcTemplate.query( RestaurantMapper.SELECT_MENU + " where restaurant = ?", mapper.getMenuRowMapper(), restaurantId );
+		List<Menu> menus = jdbcTemplate.query( RestaurantMapper.SELECT_MENU + " where restaurant = ?", mapper.getMenuRowMapper(), restaurantId );
+		if( null != menus ) {
+			if( !menus.isEmpty() ) {
+				for( Menu menu : menus ) {
+					menu.setSections( listSections( menu.getId() ) );
+				}
+			}
+		}
+		return menus;
 	}
 
 	/* (non-Javadoc)
@@ -82,7 +95,12 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public Menu findMenuById( Long menuId ) {
-		return jdbcTemplate.queryForObject( RestaurantMapper.SELECT_MENU + " where id = ?", mapper.getMenuRowMapper(), menuId );
+		Menu menu = jdbcTemplate.queryForObject( RestaurantMapper.SELECT_MENU + " where id = ?", mapper.getMenuRowMapper(), menuId );
+		if( null != menu ) {
+			menu.setSections( listSections( menu.getId() ) );
+		}
+		
+		return menu;
 	}
 
 	/* (non-Javadoc)
@@ -108,7 +126,16 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public List<Section> listSections( Long menuId ) {
-		return jdbcTemplate.query( RestaurantMapper.SELECT_SECTION + " where menu = ?", mapper.getSectionRowMapper(), menuId );
+		List<Section> sections = jdbcTemplate.query( RestaurantMapper.SELECT_SECTION + " where menu = ?", mapper.getSectionRowMapper(), menuId );
+		if( null != sections ) {
+			if( !sections.isEmpty() ) {
+				for( Section section : sections ) {
+					section.setMenuItems( listMenuItems( section.getId() ) );
+				}
+			}
+		}
+		
+		return sections;
 	}
 
 	/* (non-Javadoc)
@@ -116,7 +143,12 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public Section findSectionById( Long sectionId ) {
-		return jdbcTemplate.queryForObject( RestaurantMapper.SELECT_SECTION + " where id = ?", mapper.getSectionRowMapper(), sectionId );
+		Section section = jdbcTemplate.queryForObject( RestaurantMapper.SELECT_SECTION + " where id = ?", mapper.getSectionRowMapper(), sectionId );
+		if( null != section ) {
+			section.setMenuItems( listMenuItems( section.getId() ) );
+		}
+		
+		return section;
 	}
 
 	/* (non-Javadoc)

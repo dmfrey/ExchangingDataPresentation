@@ -13,7 +13,7 @@ public class Menu {
 
 	private Long id;
 	private String name;
-	private List<Section> sectons;
+	private List<Section> sections;
 
 	/**
 	 * 
@@ -58,17 +58,17 @@ public class Menu {
 	}
 
 	/**
-	 * @return the sectons
+	 * @return the sections
 	 */
-	public List<Section> getSectons() {
-		return sectons;
+	public List<Section> getSections() {
+		return sections;
 	}
 
 	/**
-	 * @param sectons the sectons to set
+	 * @param sections the sections to set
 	 */
-	public void setSectons( List<Section> sectons ) {
-		this.sectons = sectons;
+	public void setSections( List<Section> sections ) {
+		this.sections = sections;
 	}
 
 	/* (non-Javadoc)
@@ -136,9 +136,9 @@ public class Menu {
 			builder.append( ", " );
 		}
 		
-		if( sectons != null ) {
-			builder.append( "sectons=" );
-			builder.append( sectons );
+		if( sections != null ) {
+			builder.append( "sections=" );
+			builder.append( sections );
 		}
 		
 		builder.append( "]" );
