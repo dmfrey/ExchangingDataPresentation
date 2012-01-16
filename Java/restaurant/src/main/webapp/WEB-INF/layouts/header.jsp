@@ -8,13 +8,9 @@
 
 <nav>
 	<ul>
-		<!-- li>
-			<s:url value="/senders" var="senders_url" />
-			<a href="${ senders_url }">Senders</a>
-		</li>
 		<li>
-			<s:url value="/sellers" var="sellers_url" />
-			<a href="${ sellers_url }">Sellers</a>
-		</li -->
+			<s:url value="/api" var="api_url" />
+			<a href="${ api_url }">API</a>
+		</li>
 	</ul>
 </nav>

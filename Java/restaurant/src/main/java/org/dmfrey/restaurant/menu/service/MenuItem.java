@@ -3,6 +3,9 @@
  */
 package org.dmfrey.restaurant.menu.service;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * @author Daniel Frey
  *
@@ -10,8 +13,14 @@ package org.dmfrey.restaurant.menu.service;
 public class MenuItem {
 
 	private Long id;
+
+	@NotNull
+	@Size( min = 1, max = 128 )
 	private String name;
+
+	@Size( max = 512 )
 	private String description;
+	
 	private Double price;
 	
 	/**

@@ -88,12 +88,6 @@ form button {
 	padding: 0.5em
 }
 
-form button:hover {
-	background-color: #E6EFC2;
-	border: 1px solid #C6D880;
-	color: #529214;
-}
-
 form button:active {
 	background-color: #333;
 	color: white;
@@ -122,4 +116,12 @@ form .required {
 	color: #ff3838;
 	font-weight: bold;
 	font-size: 0.8em;
+}
+
+span.rowForm form {
+	font-size: .7em;
+	width: 5em;
+	border: none;
+	margin: 0;
+	padding: 2px;
 }

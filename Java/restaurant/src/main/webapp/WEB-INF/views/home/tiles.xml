@@ -3,6 +3,10 @@
 
 <tiles-definitions>
 	
+	<definition name="api" extends="page">
+		<put-attribute name="content" value="/WEB-INF/views/home/api.jsp" />
+	</definition>
+
 	<definition name="restaurants" extends="page">
 		<put-attribute name="content" value="/WEB-INF/views/home/restaurants.jsp" />
 	</definition>

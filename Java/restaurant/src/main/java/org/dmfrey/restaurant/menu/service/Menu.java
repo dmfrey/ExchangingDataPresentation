@@ -5,6 +5,9 @@ package org.dmfrey.restaurant.menu.service;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * @author Daniel Frey
  *
@@ -12,7 +15,11 @@ import java.util.List;
 public class Menu {
 
 	private Long id;
+	
+	@NotNull
+	@Size( min = 1, max = 128 )
 	private String name;
+	
 	private List<Section> sections;
 
 	/**
@@ -138,7 +145,7 @@ public class Menu {
 		
 		if( sections != null ) {
 			builder.append( "sections=" );
-			builder.append( sections );
+			builder.append( sections.size() );
 		}
 		
 		builder.append( "]" );

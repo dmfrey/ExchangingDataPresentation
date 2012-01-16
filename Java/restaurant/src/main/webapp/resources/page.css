@@ -138,10 +138,19 @@ body {
 
 section#list {
 	display: table;
+	width: 100%;
 }
 
 section#list header {
 	display: table-header-group;
+}
+
+section#list header ul {
+	display: table-row;
+}
+
+section#list header ul li {
+	display: table-cell;
 }
 
 section#list article {
@@ -179,5 +188,17 @@ section#list article div span.zip {
 
 section#list article div span.country {
 	width: 110px;
+}
+
+section#list footer {
+	display: table-footer-group;
+}
+
+section#list footer ul {
+	display: table-row;
+}
+
+section#list footer ul li {
+	display: table-cell;
 }
 

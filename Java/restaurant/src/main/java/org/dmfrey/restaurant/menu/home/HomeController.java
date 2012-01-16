@@ -41,6 +41,14 @@ public class HomeController {
 		this.service = service;
 	}
 	
+	@RequestMapping( value = "api", method = RequestMethod.GET )
+	public String api( WebRequest request, Model model ) {
+		log.info( "api : enter" );
+
+		log.info( "api : exit" );
+		return "api";
+	}
+
 	@RequestMapping( method = RequestMethod.GET )
 	public String restaurants( WebRequest request, Model model ) {
 		log.info( "restaurants : enter" );
@@ -53,7 +61,7 @@ public class HomeController {
 	}
 
 	@RequestMapping( method = RequestMethod.POST )
-	public String newRestaurant( @Valid @ModelAttribute Restaurant restaurant, BindingResult result ) {
+	public String newRestaurant( @Valid @ModelAttribute Restaurant restaurant, BindingResult result, Model model ) {
 		log.info( "newRestaurant : enter" );
 		
 		if( result.hasErrors() ) {
@@ -62,14 +70,14 @@ public class HomeController {
 			return "restaurants";
 		}
 		
-		service.createRestaurant( restaurant );
+		Restaurant created = service.createRestaurant( restaurant );
 		
 		log.info( "newRestaurant : exit" );
-		return "redirect:/";
+		return "redirect:/" + created.getId();
 	}
 	
-	@RequestMapping( method = RequestMethod.PUT )
-	public String updateRestaurant( @Valid @ModelAttribute Restaurant restaurant, BindingResult result ) {
+	@RequestMapping( value = "{restaurantId}", method = RequestMethod.PUT )
+	public String updateRestaurant( @PathVariable Long restaurantId, @Valid @ModelAttribute Restaurant restaurant, BindingResult result, Model model ) {
 		log.info( "updateRestaurant : enter" );
 		
 		if( result.hasErrors() ) {
@@ -78,10 +86,10 @@ public class HomeController {
 			return "restaurants";
 		}
 		
-		service.updateRestaurant( restaurant );
+		Restaurant updated = service.updateRestaurant( restaurant );
 		
 		log.info( "updateRestaurant : exit" );
-		return "redirect:/";
+		return "redirect:/" + updated.getId();
 	}
 	
 	@RequestMapping( method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
@@ -105,7 +113,7 @@ public class HomeController {
 		model.addAttribute( "restaurant", service.findById( restaurantId ) );
 		
 		log.info( "restaurant : exit" );
-		return "restaurant";
+		return "restaurants";
 	}
 
 	@RequestMapping( value = "{restaurantId}", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
