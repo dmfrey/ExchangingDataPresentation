@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
@@ -130,10 +131,21 @@ public class HomeController {
 		return service.findById( restaurantId );
 	}
 
+	@RequestMapping( value = "{restaurantId}", method = RequestMethod.DELETE )
+	public String deleteRestaurant( @PathVariable Long restaurantId, WebRequest request, Model model ) {
+		log.info( "deleteRestaurant : enter" );
+
+		service.deleteRestaurant( restaurantId );
+		
+		log.info( "deleteRestaurant : exit" );
+		return "redirect:/";
+	}
+
 	@RequestMapping( value = "{restaurantId}/menus", method = RequestMethod.GET )
 	public String menus( @PathVariable Long restaurantId, WebRequest request, Model model ) {
 		log.info( "menus : enter" );
 
+		model.addAttribute( "restaurant", service.findById( restaurantId ) );
 		model.addAttribute( "menus", service.listMenus( restaurantId ) );
 		model.addAttribute( "menu", new Menu() );
 		
@@ -165,14 +177,14 @@ public class HomeController {
 			return "menus";
 		}
 		
-		service.createMenu( menu, restaurantId );
+		Menu created = service.createMenu( menu, restaurantId );
 		
 		log.info( "newMenu : exit" );
-		return "redirect:/" + restaurantId + "/menus";
+		return "redirect:/" + restaurantId + "/menus/" + created.getId();
 	}
 	
-	@RequestMapping( value = "{restaurantId}/menus", method = RequestMethod.PUT )
-	public String updateMenu( @PathVariable Long restaurantId, @Valid @ModelAttribute Menu menu, BindingResult result ) {
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}", method = RequestMethod.PUT )
+	public String updateMenu( @PathVariable Long restaurantId, @PathVariable Long menuId, @Valid @ModelAttribute Menu menu, BindingResult result ) {
 		log.info( "updateMenu : enter" );
 		
 		if( result.hasErrors() ) {
@@ -181,23 +193,24 @@ public class HomeController {
 			return "menus";
 		}
 		
-		service.updateMenu( menu );
+		Menu updated = service.updateMenu( menu );
 		
 		log.info( "updateMenu : exit" );
-		return "redirect:/" + restaurantId + "/menus";
+		return "redirect:/" + restaurantId + "/menus/" + updated.getId();
 	}
 	
 	@RequestMapping( value = "{restaurantId}/menus/{menuId}", method = RequestMethod.GET )
 	public String menu( @PathVariable Long restaurantId, @PathVariable Long menuId, WebRequest request, Model model ) {
 		log.info( "menu : enter" );
 
+		model.addAttribute( "restaurant", service.findById( restaurantId ) );
 		model.addAttribute( "menu", service.findMenuById( menuId ) );
 		
 		model.addAttribute( "restaurantId", restaurantId );
 		model.addAttribute( "menuId", menuId );
 		
 		log.info( "menu : exit" );
-		return "menu";
+		return "menus";
 	}
 
 	@RequestMapping( value = "{restaurantId}/menus/{menuId}", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
@@ -214,10 +227,22 @@ public class HomeController {
 		return service.findMenuById( menuId );
 	}
 
+	@RequestMapping( value = "{restaurantId}/menus", method = RequestMethod.DELETE )
+	public String deleteMenu( @PathVariable Long restaurantId, @RequestParam Long menuId, WebRequest request, Model model ) {
+		log.info( "deleteMenu : enter" );
+
+		service.deleteMenu( menuId );
+		
+		log.info( "deleteMenu : exit" );
+		return "redirect:/" + restaurantId + "/menus";
+	}
+
 	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections", method = RequestMethod.GET )
 	public String sections( @PathVariable Long restaurantId, @PathVariable Long menuId, WebRequest request, Model model ) {
 		log.info( "sections : enter" );
 
+		model.addAttribute( "restaurant", service.findById( restaurantId ) );
+		model.addAttribute( "menu", service.findMenuById( menuId ) );
 		model.addAttribute( "sections", service.listSections( menuId ) );
 		model.addAttribute( "section", new Section() );
 		
@@ -252,14 +277,14 @@ public class HomeController {
 			return "sections";
 		}
 		
-		service.createSection( section, menuId );
+		Section created = service.createSection( section, menuId );
 		
 		log.info( "newSection : exit" );
-		return "redirect:/" + restaurantId + "/menus/" + menuId + "/sections";
+		return "redirect:/" + restaurantId + "/menus/" + menuId + "/sections/" + created.getId();
 	}
 	
-	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections", method = RequestMethod.PUT )
-	public String updateSection( @PathVariable Long restaurantId, @PathVariable Long menuId,  @Valid @ModelAttribute Section section, BindingResult result ) {
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}", method = RequestMethod.PUT )
+	public String updateSection( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId, @Valid @ModelAttribute Section section, BindingResult result ) {
 		log.info( "updateSection : enter" );
 		
 		if( result.hasErrors() ) {
@@ -268,16 +293,18 @@ public class HomeController {
 			return "sections";
 		}
 		
-		service.updateSection( section );
+		Section updated = service.updateSection( section );
 		
 		log.info( "updateSection : exit" );
-		return "redirect:/" + restaurantId + "/menus/" + menuId + "/sections";
+		return "redirect:/" + restaurantId + "/menus/" + menuId + "/sections/" + updated.getId();
 	}
 	
 	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}", method = RequestMethod.GET )
 	public String section( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId, WebRequest request, Model model ) {
 		log.info( "section : enter" );
 
+		model.addAttribute( "restaurant", service.findById( restaurantId ) );
+		model.addAttribute( "menu", service.findMenuById( menuId ) );
 		model.addAttribute( "section", service.findSectionById( sectionId ) );
 		
 		model.addAttribute( "restaurantId", restaurantId );
@@ -285,7 +312,7 @@ public class HomeController {
 		model.addAttribute( "sectionId", sectionId );
 		
 		log.info( "section : exit" );
-		return "section";
+		return "sections";
 	}
 
 	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
@@ -302,10 +329,23 @@ public class HomeController {
 		return service.findSectionById( sectionId );
 	}
 
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections", method = RequestMethod.DELETE )
+	public String deleteSection( @PathVariable Long restaurantId, @PathVariable Long menuId, @RequestParam Long sectionId, WebRequest request, Model model ) {
+		log.info( "deleteSection : enter" );
+
+		service.deleteSection( sectionId );
+		
+		log.info( "deleteSection : exit" );
+		return "redirect:/" + restaurantId + "/menus/" + menuId + "/sections";
+	}
+
 	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems", method = RequestMethod.GET )
 	public String menuItems( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId, WebRequest request, Model model ) {
 		log.info( "menuItems : enter" );
 
+		model.addAttribute( "restaurant", service.findById( restaurantId ) );
+		model.addAttribute( "menu", service.findMenuById( menuId ) );
+		model.addAttribute( "section", service.findSectionById( sectionId ) );
 		model.addAttribute( "menuItems", service.listMenuItems( sectionId ) );
 		model.addAttribute( "menuItem", new MenuItem() );
 
@@ -341,14 +381,14 @@ public class HomeController {
 			return "menuItems";
 		}
 		
-		service.createMenuItem( menuItem, sectionId );
+		MenuItem created = service.createMenuItem( menuItem, sectionId );
 		
 		log.info( "newMenuItem : exit" );
-		return "redirect:/" + restaurantId + "/menus/" + menuId + "/sections/" + sectionId + "/menuItems";
+		return "redirect:/" + restaurantId + "/menus/" + menuId + "/sections/" + sectionId + "/menuItems/" + created.getId();
 	}
 	
-	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems", method = RequestMethod.PUT )
-	public String updateMenuItem( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId, @Valid @ModelAttribute MenuItem menuItem, BindingResult result ) {
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems/{menuItemId}", method = RequestMethod.PUT )
+	public String updateMenuItem( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId, @PathVariable Long menuItemId, @Valid @ModelAttribute MenuItem menuItem, BindingResult result ) {
 		log.info( "updateMenuItem : enter" );
 		
 		if( result.hasErrors() ) {
@@ -357,25 +397,28 @@ public class HomeController {
 			return "menuItems";
 		}
 		
-		service.updateMenuItem( menuItem );
+		MenuItem updated = service.updateMenuItem( menuItem );
 		
 		log.info( "updateMenuItem : exit" );
-		return "redirect:/" + restaurantId + "/menus/" + menuId + "/sections/" + sectionId + "/menuItems";
+		return "redirect:/" + restaurantId + "/menus/" + menuId + "/sections/" + sectionId + "/menuItems/" + updated.getId();
 	}
 	
 	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems/{menuItemId}", method = RequestMethod.GET )
 	public String menuItem( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId, @PathVariable Long menuItemId, WebRequest request, Model model ) {
 		log.info( "menuItem : enter" );
 
+		model.addAttribute( "restaurant", service.findById( restaurantId ) );
+		model.addAttribute( "menu", service.findMenuById( menuId ) );
+		model.addAttribute( "section", service.findSectionById( sectionId ) );
 		model.addAttribute( "menuItem", service.findMenuItemById( menuItemId ) );
 		
 		model.addAttribute( "restaurantId", restaurantId );
 		model.addAttribute( "menuId", menuId );
 		model.addAttribute( "sectionId", sectionId );
-		model.addAttribute( "menuItem", menuItemId );
+		model.addAttribute( "menuItemId", menuItemId );
 		
 		log.info( "menuItem : exit" );
-		return "menuItem";
+		return "menuItems";
 	}
 
 	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems/{menuItemId}", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" } )
@@ -390,6 +433,16 @@ public class HomeController {
 		log.debug( "menuItemXml : enter" );
 		log.debug( "menuItemXml : exit" );
 		return service.findMenuItemById( menuItemId );
+	}
+
+	@RequestMapping( value = "{restaurantId}/menus/{menuId}/sections/{sectionId}/menuItems", method = RequestMethod.DELETE )
+	public String deleteMenuItem( @PathVariable Long restaurantId, @PathVariable Long menuId, @PathVariable Long sectionId, @RequestParam Long menuItemId, WebRequest request, Model model ) {
+		log.info( "deleteMenuItem : enter" );
+
+		service.deleteMenuItem( menuItemId );
+		
+		log.info( "deleteMenuItem : exit" );
+		return "redirect:/" + restaurantId + "/menus/" + menuId + "/sections/" + sectionId + "/menuItems";
 	}
 
 }

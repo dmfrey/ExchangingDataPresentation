@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Daniel Frey
@@ -38,7 +39,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public List<Restaurant> list() {
-		return jdbcTemplate.query( RestaurantMapper.SELECT_RESTAURANT, mapper );
+		return jdbcTemplate.query( RestaurantMapper.SELECT_RESTAURANT + " order by id", mapper );
 	}
 
 	/* (non-Javadoc)
@@ -58,9 +59,11 @@ public class JdbcRestaurantService implements RestaurantService {
 	 * @see org.dmfrey.restaurant.menu.service.RestaurantService#createRestaurant(org.dmfrey.restaurant.menu.service.Restaurant)
 	 */
 	@Override
+	@Transactional
 	public Restaurant createRestaurant( Restaurant restaurant ) {
 		jdbcTemplate.update( "insert into restaurant(name) values(?)", restaurant.getName() );
 		restaurant.setId( jdbcTemplate.queryForLong( "call identity()" ) );
+		System.out.println( restaurant.toString() );
 		return restaurant;
 	}
 
@@ -68,6 +71,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 * @see org.dmfrey.restaurant.menu.service.RestaurantService#createMenu(org.dmfrey.restaurant.menu.service.Menu, java.lang.Long)
 	 */
 	@Override
+	@Transactional
 	public Menu createMenu( Menu menu, Long restaurantId ) {
 		jdbcTemplate.update( "insert into menu(name, restaurant) values(?,?)", menu.getName(), restaurantId );
 		menu.setId( jdbcTemplate.queryForLong( "call identity()" ) );
@@ -75,11 +79,25 @@ public class JdbcRestaurantService implements RestaurantService {
 	}
 
 	/* (non-Javadoc)
+	 * @see org.dmfrey.restaurant.menu.service.RestaurantService#deleteRestaurant(java.lang.Long)
+	 */
+	@Override
+	@Transactional
+	public void deleteRestaurant( Long restaurantId ) {
+		Restaurant restaurant = findById( restaurantId );
+		for( Menu menu : restaurant.getMenus() ) {
+			deleteMenu( menu.getId() );
+		}
+		
+		jdbcTemplate.update( "delete from restaurant where id = ?", restaurantId );
+	}
+
+	/* (non-Javadoc)
 	 * @see org.dmfrey.restaurant.menu.service.RestaurantService#listMenus(java.lang.Long)
 	 */
 	@Override
 	public List<Menu> listMenus( Long restaurantId ) {
-		List<Menu> menus = jdbcTemplate.query( RestaurantMapper.SELECT_MENU + " where restaurant = ?", mapper.getMenuRowMapper(), restaurantId );
+		List<Menu> menus = jdbcTemplate.query( RestaurantMapper.SELECT_MENU + " where restaurant = ? order by id", mapper.getMenuRowMapper(), restaurantId );
 		if( null != menus ) {
 			if( !menus.isEmpty() ) {
 				for( Menu menu : menus ) {
@@ -107,6 +125,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 * @see org.dmfrey.restaurant.menu.service.RestaurantService#updateRestaurant(org.dmfrey.restaurant.menu.service.Restaurant)
 	 */
 	@Override
+	@Transactional
 	public Restaurant updateRestaurant( Restaurant restaurant ) {
 		jdbcTemplate.update( "update restaurant set name = ? where id = ?", restaurant.getName(), restaurant.getId() );
 		return restaurant;
@@ -116,9 +135,24 @@ public class JdbcRestaurantService implements RestaurantService {
 	 * @see org.dmfrey.restaurant.menu.service.RestaurantService#updateMenu(org.dmfrey.restaurant.menu.service.Menu)
 	 */
 	@Override
+	@Transactional
 	public Menu updateMenu( Menu menu ) {
 		jdbcTemplate.update( "update menu set name = ? where id = ?", menu.getName(), menu.getId() );
 		return menu;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.dmfrey.restaurant.menu.service.RestaurantService#deleteMenu(java.lang.Long)
+	 */
+	@Override
+	@Transactional
+	public void deleteMenu( Long menuId ) {
+		Menu menu = findMenuById( menuId );
+		for( Section section : menu.getSections() ) {
+			deleteSection( section.getId() );
+		}
+		
+		jdbcTemplate.update( "delete from menu where id = ?", menuId );
 	}
 
 	/* (non-Javadoc)
@@ -126,7 +160,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public List<Section> listSections( Long menuId ) {
-		List<Section> sections = jdbcTemplate.query( RestaurantMapper.SELECT_SECTION + " where menu = ?", mapper.getSectionRowMapper(), menuId );
+		List<Section> sections = jdbcTemplate.query( RestaurantMapper.SELECT_SECTION + " where menu = ? order by id", mapper.getSectionRowMapper(), menuId );
 		if( null != sections ) {
 			if( !sections.isEmpty() ) {
 				for( Section section : sections ) {
@@ -155,6 +189,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 * @see org.dmfrey.restaurant.menu.service.RestaurantService#createSection(org.dmfrey.restaurant.menu.service.Section, java.lang.Long)
 	 */
 	@Override
+	@Transactional
 	public Section createSection( Section section, Long menuId ) {
 		jdbcTemplate.update( "insert into section(name, menu) values(?,?)", section.getName(), menuId );
 		section.setId( jdbcTemplate.queryForLong( "call identity()" ) );
@@ -165,9 +200,24 @@ public class JdbcRestaurantService implements RestaurantService {
 	 * @see org.dmfrey.restaurant.menu.service.RestaurantService#updateSection(org.dmfrey.restaurant.menu.service.Section)
 	 */
 	@Override
+	@Transactional
 	public Section updateSection( Section section ) {
 		jdbcTemplate.update( "update section set name = ? where id = ?", section.getName(), section.getId() );
 		return section;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.dmfrey.restaurant.menu.service.RestaurantService#deleteSection(java.lang.Long)
+	 */
+	@Override
+	@Transactional
+	public void deleteSection( Long sectionId ) {
+		Section section = findSectionById( sectionId );
+		for( MenuItem menuItem : section.getMenuItems() ) {
+			deleteMenuItem( menuItem.getId() );
+		}
+		
+		jdbcTemplate.update( "delete from section where id = ?", sectionId );
 	}
 
 	/* (non-Javadoc)
@@ -175,7 +225,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 */
 	@Override
 	public List<MenuItem> listMenuItems( Long sectionId ) {
-		return jdbcTemplate.query( RestaurantMapper.SELECT_MENU_ITEM + " where section = ?", mapper.getMenuItemRowMapper(), sectionId );
+		return jdbcTemplate.query( RestaurantMapper.SELECT_MENU_ITEM + " where section = ? order by id", mapper.getMenuItemRowMapper(), sectionId );
 	}
 
 	/* (non-Javadoc)
@@ -190,6 +240,7 @@ public class JdbcRestaurantService implements RestaurantService {
 	 * @see org.dmfrey.restaurant.menu.service.RestaurantService#createMenuItem(org.dmfrey.restaurant.menu.service.MenuItem, java.lang.Long)
 	 */
 	@Override
+	@Transactional
 	public MenuItem createMenuItem( MenuItem menuItem, Long sectionId ) {
 		jdbcTemplate.update( "insert into menu_item(name, description, price, section) values(?,?,?,?)", menuItem.getName(), menuItem.getDescription(), menuItem.getPrice(), sectionId );
 		menuItem.setId( jdbcTemplate.queryForLong( "call identity()" ) );
@@ -200,9 +251,19 @@ public class JdbcRestaurantService implements RestaurantService {
 	 * @see org.dmfrey.restaurant.menu.service.RestaurantService#updateMenuItem(org.dmfrey.restaurant.menu.service.MenuItem)
 	 */
 	@Override
+	@Transactional
 	public MenuItem updateMenuItem( MenuItem menuItem ) {
 		jdbcTemplate.update( "update menu_item set name = ?, description = ?, price = ? where id = ?", menuItem.getName(), menuItem.getDescription(), menuItem.getPrice(), menuItem.getId() );
 		return menuItem;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.dmfrey.restaurant.menu.service.RestaurantService#deleteMenuItem(java.lang.Long)
+	 */
+	@Override
+	@Transactional
+	public void deleteMenuItem( Long menuItemId ) {
+		jdbcTemplate.update( "delete from menu_item where id = ?", menuItemId );
 	}
 
 }

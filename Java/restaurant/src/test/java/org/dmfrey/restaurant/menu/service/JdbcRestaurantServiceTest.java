@@ -68,6 +68,12 @@ public class JdbcRestaurantServiceTest {
 	}
 	
 	@Test
+	public void testDeleteRestaurant() {
+		Restaurant restaurant = service.findById( 1L );
+		service.deleteRestaurant( restaurant.getId() );
+	}
+	
+	@Test
 	public void testCreateMenu() {
 		Restaurant restaurant = service.findById( 1L );
 		Menu menu = new Menu( null, "Test Menu" );
@@ -106,6 +112,12 @@ public class JdbcRestaurantServiceTest {
 	}
 	
 	@Test
+	public void testDeleteMenu() {
+		Menu menu = service.findMenuById( 1L );
+		service.deleteMenu( menu.getId() );
+	}
+	
+	@Test
 	public void testListSections() {
 		Menu menu = service.findMenuById( 1L );
 		List<Section> sections = service.listSections( menu.getId() );
@@ -140,6 +152,12 @@ public class JdbcRestaurantServiceTest {
 		Section updated = service.updateSection( section );
 		assertNotNull( updated.getId() );
 		assertEquals( "Test Section, updated", updated.getName() );
+	}
+	
+	@Test
+	public void testDeleteSection() {
+		Section section = service.findSectionById( 1L );
+		service.deleteSection( section.getId() );
 	}
 	
 	@Test
@@ -187,6 +205,12 @@ public class JdbcRestaurantServiceTest {
 		assertEquals( "Test Menu Item, updated", updated.getName() );
 		assertEquals( "Description of Test Menu Item, updated", updated.getDescription() );
 		assertEquals( new Double( 2.00 ), updated.getPrice() );
+	}
+	
+	@Test
+	public void testDeleteMenuItem() {
+		MenuItem menuItem = service.findMenuItemById( 1L );
+		service.deleteMenuItem( menuItem.getId() );
 	}
 	
 	@Rule
