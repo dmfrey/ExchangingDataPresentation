@@ -8,8 +8,8 @@
 	<title><tiles:insertAttribute name="title" defaultValue="Restaurant" /></title>
 
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />	
-    <meta name="description" content="KnollTextiles backend core services." />
-    <meta name="keywords" content="Knoll, KnollTextiles, textiles, fabric" />
+    <meta name="description" content="Restaurant backend core services." />
+    <meta name="keywords" content="Exchanging Data Podcast Series" />
 
 	<link rel="stylesheet" href="<c:url value="/resources/page.css" />" type="text/css" media="screen" />
 	

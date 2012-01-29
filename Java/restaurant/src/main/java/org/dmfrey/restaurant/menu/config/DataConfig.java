@@ -92,7 +92,7 @@ public class DataConfig {
 
 			new DatabaseUpgrader( database, environment ) {
 				protected void addInstallChanges( DatabaseChangeSet changeSet ) {
-					changeSet.add( SqlDatabaseChange.inResource( new ClassPathResource( "test-data.sql", getClass() ) ) );
+					changeSet.add( SqlDatabaseChange.inResource( new ClassPathResource( "test-data-actual.sql", getClass() ) ) );
 				}
 			}.run();
 			

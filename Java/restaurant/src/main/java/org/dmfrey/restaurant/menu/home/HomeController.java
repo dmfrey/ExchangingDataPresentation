@@ -50,6 +50,14 @@ public class HomeController {
 		return "api";
 	}
 
+	@RequestMapping( value = "display", method = RequestMethod.GET )
+	public String display( WebRequest request, Model model ) {
+		log.info( "display : enter" );
+
+		log.info( "display : exit" );
+		return "display";
+	}
+
 	@RequestMapping( method = RequestMethod.GET )
 	public String restaurants( WebRequest request, Model model ) {
 		log.info( "restaurants : enter" );

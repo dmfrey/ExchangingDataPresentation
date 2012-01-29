@@ -9,6 +9,10 @@
 <nav>
 	<ul>
 		<li>
+			<s:url value="/display" var="display_url" />
+			<a href="${ display_url }">JQuery Display</a>
+		</li>
+		<li>
 			<s:url value="/api" var="api_url" />
 			<a href="${ api_url }">API</a>
 		</li>
