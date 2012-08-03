@@ -5,128 +5,236 @@ package org.dmfrey.restaurant.menu.service;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * @author Daniel Frey
  *
  */
-public interface RestaurantService {
+@Service
+public class RestaurantService {
 
+	private static final Logger log = Logger.getLogger( RestaurantService.class );
+	
+	private RestaurantRepository restaurantRepository;
+	private MenuRepository menuRepository;
+	private SectionRepository sectionRepository;
+	private MenuItemRepository menuItemRepository;
+	
+	@Inject
+	public RestaurantService( RestaurantRepository restaurantRepository, MenuRepository menuRepository, SectionRepository sectionRepository, MenuItemRepository menuItemRepository ) {
+		log.trace( "initialize : enter" );
+		
+		this.restaurantRepository = restaurantRepository;
+		this.menuRepository = menuRepository;
+		this.sectionRepository = sectionRepository;
+		this.menuItemRepository = menuItemRepository;
+
+		log.trace( "initialize : exit" );
+	}
+	
 	/**
 	 * @return
 	 */
-	List<Restaurant> list();
+	public List<Restaurant> list() {
+		log.debug( "list : enter" );
+		log.debug( "list : exit" );
+		return restaurantRepository.findAll();
+	}
 	
 	/**
 	 * @param restaurantId
 	 * @return
 	 */
-	Restaurant findById( Long restaurantId );
+	public Restaurant findById( Long restaurantId ) {
+		log.debug( "findById : enter" );
+
+		Restaurant restaurant = restaurantRepository.findOne( restaurantId );
+		if( null != restaurant && log.isTraceEnabled() ) {
+			log.trace( "findById : restaurant=" + restaurant.toString() );
+		}
+		
+		log.debug( "findById : enter" );
+		return restaurant;
+	}
 	
 	/**
 	 * @param restaurant
 	 * @return
 	 */
-	Restaurant createRestaurant( Restaurant restaurant );
+	@Transactional
+	public Restaurant createRestaurant( Restaurant restaurant ) {
+		log.debug( "createRestaurant : enter" );
+
+		Restaurant created = restaurantRepository.save( restaurant );
+		if( null != created && log.isTraceEnabled() ) {
+			log.trace( "createRestaurant : created=" + created.toString() );
+		}
+		
+		log.debug( "createRestaurant : enter" );
+		return created;
+	}
 	
 	/**
 	 * @param restaurant
 	 * @return
 	 */
-	Restaurant updateRestaurant( Restaurant restaurant );
+	@Transactional
+	public Restaurant updateRestaurant( Restaurant restaurant ) {
+		log.debug( "updateRestaurant : enter" );
+
+		Restaurant updated = restaurantRepository.save( restaurant );
+		if( null != updated && log.isTraceEnabled() ) {
+			log.trace( "updateRestaurant : updated=" + updated.toString() );
+		}
+		
+		log.debug( "updateRestaurant : enter" );
+		return updated;
+	}
 	
 	/**
 	 * @param restaurantId
 	 */
-	void deleteRestaurant( Long restaurantId );
+	@Transactional
+	public void deleteRestaurant( Long restaurantId ) {
+		log.debug( "deleteRestaurant : enter" );
+
+		restaurantRepository.delete( restaurantId );
+
+		log.debug( "deleteRestaurant : exit" );
+	}
 	
 	/**
 	 * @param restaurantId
 	 * @return
 	 */
-	List<Menu> listMenus( Long restaurantId );
+	public List<Menu> listMenus( Long restaurantId ) {
+		return menuRepository.findByRestaurant( restaurantId );
+	}
 	
 	/**
 	 * @param menuId
 	 * @return
 	 */
-	Menu findMenuById( Long menuId );
+	public Menu findMenuById( Long menuId ) {
+		return menuRepository.findOne( menuId );
+	}
 	
 	/**
 	 * @param menu
 	 * @param restaurantId
 	 * @return
 	 */
-	Menu createMenu( Menu menu, Long restaurantId );
+	@Transactional
+	public Menu createMenu( Menu menu ) {
+		return menuRepository.save( menu );
+	}
 	
 	/**
 	 * @param menu
 	 * @return
 	 */
-	Menu updateMenu( Menu menu );
+	@Transactional
+	public Menu updateMenu( Menu menu ) {
+		return menuRepository.save( menu );
+	}
 	
+	/**
+	 * @param menuId
+	 */
+	@Transactional
+	public void deleteMenu( Long menuId ) {
+		menuRepository.delete( menuId );
+	}
+
 	/**
 	 * @param menuId
 	 * @return
 	 */
-	List<Section> listSections( Long menuId );
+	public List<Section> listSections( Long menuId ) {
+		return sectionRepository.findByMenu( menuId );
+	}
 	
-	/**
-	 * @param menuId
-	 */
-	void deleteMenu( Long menuId );
-
 	/**
 	 * @param sectionId
 	 * @return
 	 */
-	Section findSectionById( Long sectionId );
+	public Section findSectionById( Long sectionId ) {
+		return sectionRepository.findOne( sectionId );
+	}
 	
 	/**
 	 * @param section
 	 * @param menuId
 	 * @return
 	 */
-	Section createSection( Section section, Long menuId );
+	@Transactional
+	public Section createSection( Section section ) {
+		return sectionRepository.save( section );
+	}
 	
 	/**
 	 * @param section
 	 * @return
 	 */
-	Section updateSection( Section section );
-	
+	@Transactional
+	public Section updateSection( Section section ) {
+		return sectionRepository.save( section );
+	}
+
 	/**
 	 * @param sectionId
 	 */
-	void deleteSection( Long sectionId );
+	@Transactional
+	public void deleteSection( Long sectionId ) {
+		sectionRepository.delete( sectionId );
+	}
 
 	/**
 	 * @param sectionId
 	 * @return
 	 */
-	List<MenuItem> listMenuItems( Long sectionId );
+	public List<MenuItem> listMenuItems( Long sectionId ) {
+		return menuItemRepository.findBySection( sectionId );
+	}
 	
 	/**
 	 * @param menuItemId
 	 * @return
 	 */
-	MenuItem findMenuItemById( Long menuItemId );
+	public MenuItem findMenuItemById( Long menuItemId ) {
+		return menuItemRepository.findOne( menuItemId );
+	}
 	
 	/**
 	 * @param menuItem
 	 * @param sectionId
 	 * @return
 	 */
-	MenuItem createMenuItem( MenuItem menuItem, Long sectionId );
+	@Transactional
+	public MenuItem createMenuItem( MenuItem menuItem ) {
+		return menuItemRepository.save( menuItem );
+	}
 	
 	/**
 	 * @param menuItem
 	 * @return
 	 */
-	MenuItem updateMenuItem( MenuItem menuItem );
+	@Transactional
+	public MenuItem updateMenuItem( MenuItem menuItem ) {
+		return menuItemRepository.save( menuItem );
+	}
 	
 	/**
 	 * @param menuItemId
 	 */
-	void deleteMenuItem( Long menuItemId );
+	@Transactional
+	public void deleteMenuItem( Long menuItemId ) {
+		menuItemRepository.delete( menuItemId );
+	}
 
 }

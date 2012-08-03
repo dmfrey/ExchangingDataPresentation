@@ -26,6 +26,7 @@
 
 <form:form method="${ method }" modelAttribute="menu">
 	<form:hidden path="id" />
+	<form:hidden path="restaurant" />
 	
 	<fieldset>
 		<legend>Menu Form</legend>

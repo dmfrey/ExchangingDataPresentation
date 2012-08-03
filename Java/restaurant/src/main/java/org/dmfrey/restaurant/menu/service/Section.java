@@ -5,6 +5,14 @@ package org.dmfrey.restaurant.menu.service;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -12,14 +20,25 @@ import javax.validation.constraints.Size;
  * @author Daniel Frey
  *
  */
+@Entity
+@Table( 
+	name = "section"
+)
 public class Section {
 
+	@Id
+	@GeneratedValue( strategy = GenerationType.AUTO )
 	private Long id;
 
+	@Column( name = "name" )
 	@NotNull
 	@Size( min = 1, max = 128 )
 	private String name;
 
+	@Column( name = "menu" )
+	private Long menu;
+	
+	@OneToMany( mappedBy = "section", targetEntity = MenuItem.class, cascade = CascadeType.ALL )
 	private List<MenuItem> menuItems;
 
 	/**
@@ -62,6 +81,20 @@ public class Section {
 	 */
 	public void setName( String name ) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the menu
+	 */
+	public Long getMenu() {
+		return menu;
+	}
+
+	/**
+	 * @param menu the menu to set
+	 */
+	public void setMenu( Long menu ) {
+		this.menu = menu;
 	}
 
 	/**
@@ -140,6 +173,12 @@ public class Section {
 		if( name != null ) {
 			builder.append( "name=" );
 			builder.append( name );
+			builder.append( ", " );
+		}
+		
+		if( menu != null ) {
+			builder.append( "menu=" );
+			builder.append( menu );
 			builder.append( ", " );
 		}
 		

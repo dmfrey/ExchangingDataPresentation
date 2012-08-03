@@ -3,6 +3,12 @@
  */
 package org.dmfrey.restaurant.menu.service;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -10,18 +16,30 @@ import javax.validation.constraints.Size;
  * @author Daniel Frey
  *
  */
+@Entity
+@Table( 
+	name = "menu_item"
+)
 public class MenuItem {
 
+	@Id
+	@GeneratedValue( strategy = GenerationType.AUTO )
 	private Long id;
 
+	@Column( name = "name" )
 	@NotNull
 	@Size( min = 1, max = 128 )
 	private String name;
 
+	@Column( name = "description" )
 	@Size( max = 512 )
 	private String description;
 	
+	@Column( name = "price" )
 	private Double price;
+	
+	@Column( name = "section" )
+	private Long section;
 	
 	/**
 	 * 
@@ -97,6 +115,20 @@ public class MenuItem {
 		this.price = price;
 	}
 
+	/**
+	 * @return the section
+	 */
+	public Long getSection() {
+		return section;
+	}
+
+	/**
+	 * @param section the section to set
+	 */
+	public void setSection( Long section ) {
+		this.section = section;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -170,6 +202,12 @@ public class MenuItem {
 		if( price != null ) {
 			builder.append( "price=" );
 			builder.append( price );
+			builder.append( ", " );
+		}
+		
+		if( section != null ) {
+			builder.append( "section=" );
+			builder.append( section );
 		}
 		
 		builder.append( "]" );

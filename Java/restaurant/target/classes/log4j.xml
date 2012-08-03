@@ -12,7 +12,7 @@
 	
 	<!-- Application Loggers -->
 	<logger name="org.dmfrey.restaurant.menu">
-		<level value="info" />
+		<level value="trace" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
@@ -28,8 +28,12 @@
 		<level value="info" />
 	</logger>
 
-	<logger name="org.springframework.jdbc">
+	<logger name="org.springframework.data">
 		<level value="trace" />
+	</logger>
+
+	<logger name="org.springframework.jdbc">
+		<level value="info" />
 	</logger>
 		
 	<logger name="org.springframework.oxm">

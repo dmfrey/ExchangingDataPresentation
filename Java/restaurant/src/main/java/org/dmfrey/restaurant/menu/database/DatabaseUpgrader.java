@@ -56,6 +56,10 @@ public class DatabaseUpgrader {
 		
 		if( environment.containsProperty( "database.driverClassName" ) ) {
 		
+			if( "org.h2.Driver".equals( environment.getProperty( "database.driverClassName" ) ) ) {
+				changeSet.add( installScript( "restaurant.sql" ) );
+			}
+			
 			if( "com.mysql.jdbc.Driver".equals( environment.getProperty( "database.driverClassName" ) ) ) {
 				changeSet.add( installMysqlScript( "restaurant.sql" ) );
 			}

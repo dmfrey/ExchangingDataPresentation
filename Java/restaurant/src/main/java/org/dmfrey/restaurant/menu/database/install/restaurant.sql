@@ -1,10 +1,10 @@
-create table restaurant(
+create table RESTAURANT(
 	id identity,
 	name varchar(128) not null,
 	primary key(id)
 );
 
-create table menu(
+create table MENU(
 	id identity,
 	name varchar(128) not null,
 	restaurant bigint,
@@ -12,7 +12,7 @@ create table menu(
 	foreign key (restaurant) references restaurant (id)
 );
 
-create table section(
+create table SECTION(
 	id identity,
 	name varchar(128) not null,
 	menu bigint,
@@ -20,7 +20,7 @@ create table section(
 	foreign key (menu) references menu (id)
 );
 
-create table menu_item(
+create table MENU_ITEM(
 	id identity,
 	name varchar(128) not null,
 	description varchar(512),

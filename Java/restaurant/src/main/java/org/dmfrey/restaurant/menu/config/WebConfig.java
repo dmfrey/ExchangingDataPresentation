@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.env.Environment;
+import org.springframework.data.rest.webmvc.RepositoryRestMvcConfiguration;
 import org.springframework.format.datetime.joda.JodaTimeContextHolder;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
@@ -82,6 +83,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		
 		XStreamMarshaller marshaller = new XStreamMarshaller();
 		marshaller.setSupportedClasses( new Class[] { List.class, Restaurant.class, Menu.class, Section.class, MenuItem.class } );
+		marshaller.getXStream().processAnnotations( new Class[] { Restaurant.class, Menu.class, Section.class, MenuItem.class } );
+
+//		marshaller.getXStream().addDefaultImplementation( org.hibernate.collection.PersistentBag.class, java.util.List.class );
+		marshaller.getXStream().addDefaultImplementation( org.hibernate.mapping.List.class, java.util.List.class );
+		marshaller.getXStream().addDefaultImplementation( org.hibernate.mapping.Map.class, java.util.Map.class );
+		marshaller.getXStream().addDefaultImplementation( org.hibernate.mapping.Set.class, java.util.Set.class );
 		try {
 			marshaller.setAliases( aliases );
 		} catch( ClassNotFoundException e ) {
@@ -109,6 +116,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 	// additional webmvc-related beans
 
+	@Bean
+	public RepositoryRestMvcConfiguration repositoryRestMvcConfiguration() {
+		return new RepositoryRestMvcConfiguration();
+	}
+	
 	/**
 	 * ViewResolver configuration required to work with Tiles2-based views.
 	 */

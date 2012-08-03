@@ -29,6 +29,7 @@
 
 <form:form method="${ method }" modelAttribute="section">
 	<form:hidden path="id" />
+	<form:hidden path="menu" />
 	
 	<fieldset>
 		<legend>Section Form</legend>
